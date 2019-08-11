@@ -9,7 +9,7 @@ import {
     AppState
 } from 'react-native';
 import AndroidOpenSettings from 'react-native-android-open-settings';
-// import { forIn } from 'lodash-es';
+import { every } from 'lodash-es';
 
 import { Loader } from '../components';
 
@@ -20,14 +20,14 @@ export default function requireAndroidPermissions(WrappedComponent) {
         };
 
         state = {
-            isGranted: false,
-            isLoading: true,
             appState: AppState.currentState,
-            permissions: []
+            isGranted: false,
+            isLoading: true
         };
 
         async componentDidMount() {
             AppState.addEventListener('change', this.handleAppStateChange);
+
             await this.requestPermissions();
         }
 
@@ -35,13 +35,32 @@ export default function requireAndroidPermissions(WrappedComponent) {
             AppState.removeEventListener('change', this.handleAppStateChange);
         }
 
-        handleAppStateChange = (nextAppState) => {
-            console.log('HOC', nextAppState);
-            if (
-                this.state.appState.match('/inactive|background/') &&
-                nextAppState === 'active'
-            ) {
-                this.requestPermissions();
+        handleAppStateChange = async (nextAppState) => {
+            const { permissions } = this.props;
+            const { appState } = this.state;
+
+            if (appState === 'active' && nextAppState.match(/inactive|background/)) {
+                console.log('handleAppStateChange1 if');
+                this.setState({
+                    isGranted: false,
+                    isLoading: true,
+                    appState: nextAppState
+                });
+                return;
+            }
+
+            console.log('handleAppStateChange1 perm check');
+            const allGranted = every(
+                permissions,
+                async (permission) => await PermissionsAndroid.check(permission)
+            );
+
+            if (allGranted) {
+                this.setState({
+                    isGranted: true,
+                    isLoading: false,
+                    appState: nextAppState
+                });
             }
         }
 
@@ -50,29 +69,24 @@ export default function requireAndroidPermissions(WrappedComponent) {
             try {
                 const { permissions } = this.props;
 
-                const granted = await PermissionsAndroid.requestMultiple(permissions);
+                const responseMultiple = await PermissionsAndroid.requestMultiple(permissions);
+                const allGranted = every(
+                    responseMultiple,
+                    (reponse) => reponse === 'granted'
+                );
 
-                // console.log('HOC', granted);
-                // forIn(granted, (value, key) => {
-                //     console.log('key:', key, 'value:', value);
-                // });
-
-                if (granted['android.permission.ACCESS_FINE_LOCATION'] === 'granted') {
+                if (allGranted) {
                     this.setState({
                         isGranted: true,
-                        isLoading: false,
-                        permissions
+                        isLoading: false
                     });
                     return;
                 }
 
                 this.setState({
                     isGranted: false,
-                    isLoading: false,
-                    permissions: []
+                    isLoading: false
                 });
-
-                // AndroidOpenSettings.generalSettings();
             } catch (err) {
                 console.log('PERMISSION ERROR MESSAGE:', err.message);
             }
@@ -82,14 +96,11 @@ export default function requireAndroidPermissions(WrappedComponent) {
             const { root, text } = styles;
             const { isGranted, isLoading } = this.state;
 
-            console.log('render() -> state.permissions', this.state.permissions);
-
             return (
                 <Loader loading={isLoading} show>
                     {
                         isGranted
                             ? <WrappedComponent {...this.props} />
-                            // ? <Text style={text}>Permission granted</Text>
                             :
                             <View style={root}>
                                 <Text style={text}>Permissions required</Text>
