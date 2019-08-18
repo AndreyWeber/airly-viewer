@@ -3,8 +3,6 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import format from 'date-format';
 
-import requireAndroidPermissions from '../hoc/requireAndroidPermissions';
-
 const DATE_FORMAT_PATTERN = 'dd-MM-yyyy hh:mm';
 
 const MeasurementView = ({
@@ -69,7 +67,4 @@ const styles = StyleSheet.create({
     }
 });
 
-const MeasurementViewPermitted = requireAndroidPermissions(MeasurementView);
-
 export default MeasurementView;
-export { MeasurementViewPermitted };
