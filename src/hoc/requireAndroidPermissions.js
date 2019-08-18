@@ -9,7 +9,8 @@ import {
     AppState
 } from 'react-native';
 import AndroidOpenSettings from 'react-native-android-open-settings';
-import { every } from 'lodash-es';
+
+import Aigle from 'aigle';
 
 import { Loader } from '../components';
 
@@ -35,12 +36,14 @@ export default function requireAndroidPermissions(WrappedComponent) {
             AppState.removeEventListener('change', this.handleAppStateChange);
         }
 
-        handleAppStateChange = async (nextAppState) => {
+        handleAppStateChange = (nextAppState) => {
             const { permissions } = this.props;
             const { appState } = this.state;
 
-            if (appState === 'active' && nextAppState.match(/inactive|background/)) {
-                console.log('handleAppStateChange1 if');
+            if (
+                appState === 'active' &&
+                nextAppState.match(/inactive|background/)
+            ) {
                 this.setState({
                     isGranted: false,
                     isLoading: true,
@@ -49,19 +52,21 @@ export default function requireAndroidPermissions(WrappedComponent) {
                 return;
             }
 
-            console.log('handleAppStateChange1 perm check');
-            const allGranted = every(
-                permissions,
-                async (permission) => await PermissionsAndroid.check(permission)
-            );
+            Aigle.resolve(permissions)
+                .every(async (permission) => await PermissionsAndroid.check(permission))
+                .then(
+                    result => {
+                        if (!result) {
+                            return;
+                        }
 
-            if (allGranted) {
-                this.setState({
-                    isGranted: true,
-                    isLoading: false,
-                    appState: nextAppState
-                });
-            }
+                        this.setState({
+                            isGranted: true,
+                            isLoading: false,
+                            appState: nextAppState
+                        });
+                    }
+                );
         }
 
         // TODO: Show errors properly. Use ErrorBoundary component
@@ -69,11 +74,9 @@ export default function requireAndroidPermissions(WrappedComponent) {
             try {
                 const { permissions } = this.props;
 
-                const responseMultiple = await PermissionsAndroid.requestMultiple(permissions);
-                const allGranted = every(
-                    responseMultiple,
-                    (reponse) => reponse === 'granted'
-                );
+                const allGranted = Object
+                    .values(await PermissionsAndroid.requestMultiple(permissions))
+                    .every(response => response === 'granted');
 
                 if (allGranted) {
                     this.setState({
