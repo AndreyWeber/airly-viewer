@@ -15,17 +15,19 @@ const MeasurementView = ({
 }) => {
     const { rootFont } = styles;
 
-    const from = format.asString(DATE_FORMAT_PATTERN, fromDateTime);
-    const till = format.asString(DATE_FORMAT_PATTERN, tillDateTime);
+    // If date-time-to-format is undefined, asString() will set it to current date-time
+    const from = fromDateTime
+        ? `From: ${format.asString(DATE_FORMAT_PATTERN, fromDateTime)}`
+        : null;
+    const till = tillDateTime
+        ? `Till: ${format.asString(DATE_FORMAT_PATTERN, tillDateTime)}`
+        : null;
 
-    // TODO: Get to know why static text can be seen on app reload.
-    //       Looks like was already rendered, on the level above,
-    //       while its status as yet "loading"
     return (
         <View style={[styles.root, { backgroundColor: color }]}>
             <View style={styles.dateContainer}>
-                <Text style={[rootFont, styles.text]}>From: {from}</Text>
-                <Text style={[rootFont, styles.text]}>Till: {till}</Text>
+                <Text style={[rootFont, styles.text]}>{from}</Text>
+                <Text style={[rootFont, styles.text]}>{till}</Text>
             </View>
             <Text style={[rootFont, styles.value]}>{value}</Text>
             <Text style={[rootFont, styles.level]}>{level}</Text>
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
     dateContainer: {
         display: 'flex',
         alignItems: 'flex-end',
-        width: '40%'
+        width: '100%'
     },
     rootFont: {
         color: '#ffffff',
