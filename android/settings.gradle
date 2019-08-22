@@ -4,6 +4,8 @@ include ':app'
 
 include ':react-native-geolocation-service'
 include ':react-native-android-open-settings'
+include ':react-native-geocoder-reborn'
 
 project(':react-native-geolocation-service').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-geolocation-service/android')
 project(':react-native-android-open-settings').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-android-open-settings/android')
+project(':react-native-geocoder-reborn').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-geocoder-reborn/android')

@@ -142,6 +142,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':react-native-android-open-settings')
+    implementation project(':react-native-geocoder-reborn')
     compile project(":react-native-geolocation-service")
 }
 
