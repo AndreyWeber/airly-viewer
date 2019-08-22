@@ -5546,6 +5546,11 @@ react-native-android-open-settings@^1.3.0:
   resolved "https://registry.yarnpkg.com/react-native-android-open-settings/-/react-native-android-open-settings-1.3.0.tgz#c6257f3c88ada62945fffe887933a2a828adf45d"
   integrity sha512-h4FTWRtTLRVNS7RK4Bg2gAXe8G5bFZL8Jtmfk2rG2a/N/wJR+v1rAY2BxRkC48lQTqwQCIAQRbWgLVkJ8XmaLQ==
 
+react-native-geocoder-reborn@^0.7.3:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/react-native-geocoder-reborn/-/react-native-geocoder-reborn-0.7.3.tgz#79aace9cb22542ed9f425187e4be94d851991c63"
+  integrity sha512-Gmr4QXWyMOAf6kh5oC01Nr+0XONQBmf/YKPPtXL4wL8AL2DTRt7cS73GcqlxGbgWyleBnudtUUYJzhEE7butWw==
+
 react-native-geolocation-service@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/react-native-geolocation-service/-/react-native-geolocation-service-2.0.1.tgz#d8c49fc46c3337c0fa27ecd3c3beb12f228839a0"

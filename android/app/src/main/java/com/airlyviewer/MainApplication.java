@@ -9,6 +9,7 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
 import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
+import com.devfd.RNGeocoder.RNGeocoderPackage;
 
 import com.levelasquez.androidopensettings.AndroidOpenSettingsPackage;
 
@@ -28,6 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new RNFusedLocationPackage(),
+          new RNGeocoderPackage(),
           new AndroidOpenSettingsPackage()
       );
     }
