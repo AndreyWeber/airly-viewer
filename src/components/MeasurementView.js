@@ -2,8 +2,9 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import format from 'date-format';
+
+import LocationView from './LocationView';
 
 const DATE_FORMAT_PATTERN = 'dd-MM-yyyy hh:mm';
 
@@ -13,7 +14,8 @@ const MeasurementView = ({
     description,
     fromDateTime,
     tillDateTime,
-    color
+    color,
+    location
 }) => {
     const { rootFont } = styles;
 
@@ -37,8 +39,9 @@ const MeasurementView = ({
                 <Text style={[rootFont, styles.text]}>{description}</Text>
             </View>
             <View style={styles.bottom}>
-                <Icon name="place" size={30} color="#ffffff" />
-                <Text style={[rootFont, styles.text]}>Sdfsdsfd</Text>
+                <LocationView style={[rootFont, styles.text]}>
+                    {location}
+                </LocationView>
             </View>
         </View>
     );
@@ -63,14 +66,7 @@ const styles = StyleSheet.create({
         flexGrow: 1
     },
     bottom: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
         flexGrow: 0,
-        backgroundColor: 'rgba(52, 52, 52, 0.2)', // Check how to set values
-        width: '100%',
-        paddingVertical: 7
     },
     dateContainer: {
         display: 'flex',
