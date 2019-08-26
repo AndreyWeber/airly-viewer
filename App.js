@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
 import {
-    ScrollView,
     View,
     Text,
     RefreshControl,
     StyleSheet,
-    PermissionsAndroid } from 'react-native';
+    PermissionsAndroid,
+} from 'react-native';
+
 import { find } from 'lodash-es';
 import Geolocation from 'react-native-geolocation-service';
+import Geocoder from 'react-native-geocoder-reborn';
 
 import {
     ScrollViewPermitted,
     MeasurementView,
-    MeasurementViewPermitted,
-    Loader } from './src/components';
+    Loader
+} from './src/components';
 
-import { getRawMeasurementsNearestTo, getRawIndexesMetadata } from './src/api';
+import {
+    getRawMeasurementsNearestTo,
+    getRawIndexesMetadata
+} from './src/api';
 
 /**
  * TODO:
@@ -25,8 +30,6 @@ import { getRawMeasurementsNearestTo, getRawIndexesMetadata } from './src/api';
  * 4. Put getting data to proper lifecycle method
  * + 5. Add reload buttor or swipe gesture to reload via ScrollView
  */
-
-
 export default class App extends Component {
     state = {
         isLoading: true,
@@ -35,7 +38,6 @@ export default class App extends Component {
 
     componentDidMount = async () => {
         // console.log('componentDidMount');
-        // this.asyncRequest = this.checkPermission();
         // await this.asyncRequest;
         this.refresh();
     }
@@ -72,6 +74,14 @@ export default class App extends Component {
                 ['level', rawIndexData.level]
             );
 
+            let location = null;
+            await Geocoder.geocodePosition({ lat: latitude, lng: longitude })
+                .then(res => {
+                    //console.log(res[0].formattedAddress);
+                    location = res[0].formattedAddress;
+                })
+                .catch(err => console.log(err));
+
             const { fromDateTime, tillDateTime } = rawData.current;
             this.setState({
                 isLoading: false,
@@ -81,7 +91,8 @@ export default class App extends Component {
                     description: rawIndexData.description,
                     fromDateTime: new Date(fromDateTime),
                     tillDateTime: new Date(tillDateTime),
-                    color: rawIndexData.color
+                    color: rawIndexData.color,
+                    location
                 }
             });
         } catch (err) {
@@ -92,27 +103,24 @@ export default class App extends Component {
 
     // TODO: Add proper error handlig (ErrorBoundary)
     refresh = () => {
-        // Geolocation.getCurrentPosition(
-        //     async position => {
-        //         console.log('position', position);
-        //         const {
-        //             latitude,
-        //             longitude
-        //         } = position.coords;
+        Geolocation.getCurrentPosition(
+            async position => {
+                // console.log('position', position);
+                const {
+                    latitude,
+                    longitude
+                } = position.coords;
 
-        //         await this.loadData(latitude, longitude);
+                await this.loadData(latitude, longitude);
+            },
+            error => console.log(error.code, error.message),
+            {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 10000
+            }
+        );
 
-        //         // console.log('coords', latitude, longitude);
-        //     },
-        //     error => {
-        //         console.log(error.code, error.message);
-        //     },
-        //     {
-        //         enableHighAccuracy: true,
-        //         timeout: 15000,
-        //         maximumAge: 10000
-        //     }
-        // );
         this.setState({
             isLoading: false
         });
@@ -122,62 +130,52 @@ export default class App extends Component {
     //       It should handle error with help of new React
     //       lifecycle method
     render() {
-        //console.log('from render', this.state);
         const {
             value,
             level,
             description,
             fromDateTime,
             tillDateTime,
-            color
+            color,
+            location
         } = this.state.data;
         const { isLoading } = this.state;
 
         return (
-            // <ScrollViewPermitted
-            //     contentContainerStyle={styles.root}
-            //     horizontal={false}
-            //     refreshControl={
-            //         <RefreshControl
-            //             refreshing={isLoading}
-            //             onRefresh={this.refresh}
-            //         />
-            //     }
-            //     permissions={[PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]}
-            // >
             <ScrollViewPermitted
-                contentContainerStyle={styles.root}
+                style={styles.root}
+                contentContainerStyle={styles.content}
                 horizontal={false}
+                permissions={[PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]}
                 refreshControl={
                     <RefreshControl
                         refreshing={isLoading}
-                        onRefresh={this.refresh}
+                        onRefresh={this.refresh} // TODO: Put proper method here ???
                     />
                 }
-                permissions={[PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]}
             >
-                <View>
+                {/* <View>
                     <Text style={styles.txt}>Measure</Text>
-                </View>
+                </View> */}
                 {/* <Loader loading={isLoading} show={false}>
                     <MeasurementView
                         value={value}
                         level={level}
                         description={description}
-                        fromDateTime={fromDateTime}
+                        fromDateTime={fromateTime}
                         tillDateTime={tillDateTime}
                         color={color}
                     />
                 </Loader> */}
-                {/* <MeasurementViewPermitted
+                <MeasurementView
                     value={value}
                     level={level}
                     description={description}
                     fromDateTime={fromDateTime}
                     tillDateTime={tillDateTime}
                     color={color}
-                    permissions={[PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]}
-                /> */}
+                    location={location}
+                />
             </ScrollViewPermitted>
         );
     }
@@ -185,15 +183,19 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
     root: {
+        width: '100%'
+    },
+    content: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
         width: '100%',
         height: '100%',
         backgroundColor: '#000000'
     },
     txt: {
-        color: '#c0c0c0'
+        color: '#c0c0c0',
+        borderWidth: 1,
+        borderColor: 'green'
+
     }
 });
