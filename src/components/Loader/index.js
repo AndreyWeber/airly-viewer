@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 import {
     View,
     ActivityIndicator,
-    Text,
-    StyleSheet
+    Text
 } from 'react-native';
+
+import style from './style';
 
 const Loader = ({
     children,
     loading,
     show
 }) => {
-    const { root, indicator } = styles;
+    const { root, indicator } = style;
 
     return (
         <View style={root}>
@@ -46,22 +47,5 @@ Loader.propTypes = {
     loading: PropTypes.bool.isRequired,
     show: PropTypes.bool.isRequired
 };
-
-const styles = StyleSheet.create({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-        height: '100%',
-        backgroundColor: '#000000'
-    },
-    indicator: {
-        paddingTop: 10,
-        fontSize: 15,
-        color: '#c0c0c0'
-    }
-});
 
 export default Loader;

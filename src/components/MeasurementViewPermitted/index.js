@@ -1,6 +1,6 @@
-import MeasurementView from './MeasurementView';
+import MeasurementView from '../MeasurementView';
 
-import { requireAndroidPermissions } from '../hoc';
+import { requireAndroidPermissions } from '../../hoc';
 
 const MeasurementViewPermitted = requireAndroidPermissions(MeasurementView);
 

@@ -1,6 +1,6 @@
 import { ScrollView } from 'react-native';
 
-import { requireAndroidPermissions } from '../hoc';
+import { requireAndroidPermissions } from '../../hoc';
 
 const ScrollViewPermitted = requireAndroidPermissions(ScrollView);
 
