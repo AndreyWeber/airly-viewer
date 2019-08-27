@@ -4,7 +4,6 @@ import {
     View,
     PermissionsAndroid,
     Text,
-    StyleSheet,
     Button,
     AppState
 } from 'react-native';
@@ -12,7 +11,9 @@ import AndroidOpenSettings from 'react-native-android-open-settings';
 
 import Aigle from 'aigle';
 
-import { Loader } from '../components';
+import style from './style';
+
+import { Loader } from '../../components';
 
 export default function requireAndroidPermissions(WrappedComponent) {
     class PermittedComponent extends Component {
@@ -96,7 +97,7 @@ export default function requireAndroidPermissions(WrappedComponent) {
         }
 
         render() {
-            const { root, text } = styles;
+            const { root, text } = style;
             const { isGranted, isLoading } = this.state;
 
             return (
@@ -118,22 +119,6 @@ export default function requireAndroidPermissions(WrappedComponent) {
             );
         }
     }
-
-    const styles = StyleSheet.create({
-        root: {
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-            height: '100%',
-            backgroundColor: '#000000'
-        },
-        text: {
-            color: '#ffffff',
-            paddingBottom: 15
-        }
-    });
 
     return PermittedComponent;
 }
