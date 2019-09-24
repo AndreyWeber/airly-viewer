@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import {
-    View,
-    Text,
     RefreshControl,
     StyleSheet,
     PermissionsAndroid,
@@ -14,7 +12,7 @@ import Geocoder from 'react-native-geocoder-reborn';
 import {
     ScrollViewPermitted,
     MeasurementView,
-    Loader
+    //Loader
 } from './src/components';
 
 import {

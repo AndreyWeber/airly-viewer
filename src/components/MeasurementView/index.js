@@ -9,7 +9,7 @@ import format from 'date-format';
 
 import LocationView from '../LocationView';
 
-import style from './style';
+import styles from './style';
 
 const DATE_FORMAT_PATTERN = 'dd-MM-yyyy hh:mm';
 
@@ -22,9 +22,8 @@ const MeasurementView = ({
     color,
     location
 }) => {
-    const { rootFont } = style;
-
-    // If date-time-to-format is undefined, asString() will set it to current date-time
+    // If date-time-to-format is undefined, asString() will set it to current date-time,
+    // so we need to set null value explicitly to avoid displaying wrong values
     const from = fromDateTime
         ? `From: ${format.asString(DATE_FORMAT_PATTERN, fromDateTime)}`
         : null;
@@ -33,18 +32,18 @@ const MeasurementView = ({
         : null;
 
     return (
-        <View style={[style.root, { backgroundColor: color }]}>
-            <View style={style.body}>
-                <View style={style.dateContainer}>
-                    <Text style={[rootFont, style.text]}>{from}</Text>
-                    <Text style={[rootFont, style.text]}>{till}</Text>
+        <View style={[styles.root, { backgroundColor: color }]}>
+            <View style={styles.body}>
+                <View style={styles.dateContainer}>
+                    <Text style={styles.smallText}>{from}</Text>
+                    <Text style={styles.smallText}>{till}</Text>
                 </View>
-                <Text style={[rootFont, style.value]}>{value}</Text>
-                <Text style={[rootFont, style.level]}>{level}</Text>
-                <Text style={[rootFont, style.text]}>{description}</Text>
+                <Text style={styles.largeText}>{value}</Text>
+                <Text style={styles.mediumText}>{level}</Text>
+                <Text style={styles.smallText}>{description}</Text>
             </View>
-            <View style={style.bottom}>
-                <LocationView style={[rootFont, style.text]}>
+            <View style={styles.bottom}>
+                <LocationView style={styles.smallText}>
                     {location}
                 </LocationView>
             </View>
