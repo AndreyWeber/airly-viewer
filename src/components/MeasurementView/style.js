@@ -1,25 +1,37 @@
-import createStyles, { dimensions } from '../../styles/base';
+import createStyles, {
+    dimensions,
+    colors,
+    fonts
+} from '../../styles/base';
 
 const measurementViewStyles = createStyles({
     root: {
         display: 'flex',
         width: dimensions.maxWidth,
         height: dimensions.maxHeight,
-    },
-    body: {
-        display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        flexGrow: 1
-    },
-    bottom: {
-        flexGrow: 0
     },
     dateContainer: {
         display: 'flex',
         alignItems: 'flex-end',
         width: '40%'
+    },
+    text: {
+        color: colors.text,
+        fontFamily: fonts.primary,
+        fontSize: fonts.small
+    },
+    level: {
+        color: colors.text,
+        fontFamily: fonts.primary,
+        fontSize: fonts.medium
+    },
+    value: {
+        color: colors.text,
+        fontFamily: fonts.primary,
+        fontSize: fonts.large
     }
 });
 
