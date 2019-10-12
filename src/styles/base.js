@@ -4,8 +4,10 @@ import { StyleSheet, Dimensions } from 'react-native';
  * Definition for all base style properties
  */
 export const dimensions = {
-    maxHeight: Dimensions.get('window').height,
-    maxWidth: Dimensions.get('window').width
+    maxHeight: Dimensions.get('window').height, // absolute Max Height
+    maxWidth: Dimensions.get('window').width,   // absolute Max Width
+    relMaxHeight: '100%',   // relative Max Height
+    relMaxWidth: '100%'     // relative Max Width
 };
 
 export const colors = {
