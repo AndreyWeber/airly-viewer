@@ -15,9 +15,11 @@ const locationViewStyles = createStyles({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: colors.transparentBackground,
         width: dimensions.relMaxWidth,
-        paddingVertical: 7
+        paddingVertical: 10
+    },
+    caption: {
+        paddingLeft: 5
     }
 });
 
