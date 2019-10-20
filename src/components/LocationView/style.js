@@ -1,4 +1,13 @@
-import createStyles, { dimensions } from '../../styles/base';
+import createStyles, {
+    dimensions,
+    icons,
+    colors
+} from '../../styles/base';
+
+export const iconStyle = {
+    size: icons.size,
+    color: colors.icon
+};
 
 const locationViewStyles = createStyles({
     root: {
@@ -6,9 +15,8 @@ const locationViewStyles = createStyles({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(52, 52, 52, 0.2)', // Check how to set values
-        // width: '100%',
-        width: dimensions.maxWidth,
+        backgroundColor: colors.transparentBackground,
+        width: dimensions.relMaxWidth,
         paddingVertical: 7
     }
 });
