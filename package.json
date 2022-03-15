@@ -16,7 +16,7 @@
     "aigle": "^1.14.1",
     "date-format": "^2.0.0",
     "immutable": "^4.0.0-rc.12",
-    "lodash-es": "^4.17.11",
+    "lodash-es": "^4.17.21",
     "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-immutable-proptypes": "^2.1.0",
